@@ -18,7 +18,7 @@ import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOS
 public class hn
 {
 
-    public static String run(String baseDir) {
+    public static String run(String baseDir,String input) {
 
 	Workflow workflow = new Workflow(baseDir);
 	StringBuffer output = new StringBuffer();
@@ -32,6 +32,7 @@ public class hn
 	    workflow.setPosTagger(new HMMTagger(), "conf/plugin/MajorPlugin/PosTagger/HmmPosTagger.json");
 	    workflow.activateWorkflow(true);
 
+/*
 	    String document = "한나눔 형태소 분석기는 KLDP에서 제공하는 공개 소프트웨어 프로젝트 사이트에 등록되어 있다.";
 
 	    workflow.analyze(document);
@@ -42,6 +43,11 @@ public class hn
 		+ "場所: Coex Conference Room\n";
 
 	    workflow.analyze(document);
+	    //System.out.println(workflow.getResultOfDocument());
+	    output.append(workflow.getResultOfDocument());
+*/
+
+	    workflow.analyze(input);
 	    //System.out.println(workflow.getResultOfDocument());
 	    output.append(workflow.getResultOfDocument());
 

@@ -1,15 +1,23 @@
-<%@page contentType="text/html; charset=UTF-8"%>
-<%@page import="org.json.simple.JSONObject"%>
-<%@page import="kr.co.websync.safeschool.hn"%>
-<%-- contextpath=${pageContext.request.contextPath} --%>
-<%
-  String realPath=application.getRealPath("/");
+<%@page
+contentType="application/json"%><%@page
+import="org.json.simple.JSONObject"%><%@page
+import="kr.co.websync.safeschool.hn"%><%
+
+  request.setCharacterEncoding("UTF-8");
+
+  String realpath=application.getRealPath("/");
   String input=request.getParameter("i");
-  String output=kr.co.websync.safeschool.hn.run(realPath,input);
+  String output=kr.co.websync.safeschool.hn.run(realpath,input);
+
+  response.setCharacterEncoding("UTF-8");
+  response.addHeader("Access-Control-Allow-Origin","*");
+  response.addHeader("Access-Control-Allow-Headers","Content-Type, X-Requested-With");
+  response.addHeader("Access-Control-Allow-Methods","GET, POST, OPTIONS");
+
   JSONObject obj=new JSONObject();
-  obj.put("userdir",System.getProperty("user.dir"));
-  obj.put("realpath",realPath);
-  obj.put("output",kr.co.websync.safeschool.hn.run(realPath));
+  obj.put("output",output);
+  //obj.put("test","한글안되냐?");
   out.print(obj);
   out.flush();
+
 %>

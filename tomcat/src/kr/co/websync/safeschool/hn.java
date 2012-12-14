@@ -15,6 +15,8 @@ import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PlainTextProcessor.Sen
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOSResult09.SimplePOSResult09;
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOSResult22.SimplePOSResult22;
 
+import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.NounExtractor.NounExtractor;
+
 public class hn
 {
 
@@ -30,6 +32,9 @@ public class hn
 	    workflow.setMorphAnalyzer(new ChartMorphAnalyzer(), "conf/plugin/MajorPlugin/MorphAnalyzer/ChartMorphAnalyzer.json");
 	    workflow.appendMorphemeProcessor(new UnknownProcessor(), null);
 	    workflow.setPosTagger(new HMMTagger(), "conf/plugin/MajorPlugin/PosTagger/HmmPosTagger.json");
+
+	    workflow.appendPosProcessor(new NounExtractor(), null); // noun only
+
 	    workflow.activateWorkflow(true);
 
 /*

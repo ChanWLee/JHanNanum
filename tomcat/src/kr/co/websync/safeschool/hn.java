@@ -3,8 +3,19 @@ package kr.co.websync.safeschool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+
+import kr.ac.kaist.swrc.jhannanum.comm.Eojeol;
+import kr.ac.kaist.swrc.jhannanum.comm.Sentence;
 import kr.ac.kaist.swrc.jhannanum.hannanum.Workflow;
+import kr.ac.kaist.swrc.jhannanum.hannanum.WorkflowFactory;
+
 import kr.ac.kaist.swrc.jhannanum.plugin.MajorPlugin.MorphAnalyzer.ChartMorphAnalyzer.ChartMorphAnalyzer;
 import kr.ac.kaist.swrc.jhannanum.plugin.MajorPlugin.PosTagger.HmmPosTagger.HMMTagger;
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.MorphemeProcessor.SimpleMAResult09.SimpleMAResult09;
@@ -20,10 +31,10 @@ import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.NounExtra
 public class hn
 {
 
-    public static String run(String baseDir,String input) {
+    public static JSONArray run(String baseDir,String input) {
 
 	Workflow workflow = new Workflow(baseDir);
-	StringBuffer output = new StringBuffer();
+        JSONArray output = new JSONArray();
 
 	try {
 
@@ -33,28 +44,31 @@ public class hn
 	    workflow.appendMorphemeProcessor(new UnknownProcessor(), null);
 	    workflow.setPosTagger(new HMMTagger(), "conf/plugin/MajorPlugin/PosTagger/HmmPosTagger.json");
 
-	    workflow.appendPosProcessor(new NounExtractor(), null); // noun only
+	    //workflow.appendPosProcessor(new NounExtractor(), null); // noun only
 
 	    workflow.activateWorkflow(true);
 
-/*
-	    String document = "한나눔 형태소 분석기는 KLDP에서 제공하는 공개 소프트웨어 프로젝트 사이트에 등록되어 있다.";
-
-	    workflow.analyze(document);
-	    //System.out.println(workflow.getResultOfDocument());
-	    output.append(workflow.getResultOfDocument());
-
-	    document = "日時: 2010년 7월 30일 오후 1시\n"
-		+ "場所: Coex Conference Room\n";
-
-	    workflow.analyze(document);
-	    //System.out.println(workflow.getResultOfDocument());
-	    output.append(workflow.getResultOfDocument());
-*/
-
 	    workflow.analyze(input);
-	    //System.out.println(workflow.getResultOfDocument());
-	    output.append(workflow.getResultOfDocument());
+
+	    //output.append(workflow.getResultOfDocument());
+	    LinkedList<Sentence> resultList =
+                workflow.getResultOfDocument(new Sentence(0,0,false));
+            for(Sentence s : resultList){
+                Eojeol[] eojeolArray = s.getEojeols();
+                ArrayList<List<Map<String,String>>> a = new ArrayList<List<Map<String,String>>>();
+                for(int i=0;i<eojeolArray.length;i++){
+                    ArrayList<Map<String,String>> b = new ArrayList<Map<String,String>>();
+		    for(int j=0;j<eojeolArray[i].length;j++){
+                        HashMap<String,String> obj=new HashMap<String,String>();
+			String tag=eojeolArray[i].getTag(j);
+			String morpheme=eojeolArray[i].getMorpheme(j);
+                        obj.put(tag,morpheme);
+                        b.add(obj);
+                    }
+		    a.add(b);
+                }
+                output.add(a);
+            }
 
 	    workflow.close();
 
@@ -71,7 +85,7 @@ public class hn
 	/* Shutdown the workflow */
 	workflow.close();
 
-	return output.toString();
+	return output;//.toString();
 
     }
 

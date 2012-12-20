@@ -53,9 +53,10 @@
     LinkedList<Sentence> resultList =
 	workflow.getResultOfDocument(new Sentence(0,0,false));
 
-    //out.print(JSONValue.toJSONString(resultList));
-
 /*
+    out.print(JSONValue.toJSONString(resultList));
+*/
+
     JSONArray output = new JSONArray();
 
     for(Sentence s : resultList){
@@ -76,8 +77,8 @@
     }
 
     out.print(output);
-*/
 
+/*
     ArrayList<List> l = new ArrayList<List>();
 
     for(Sentence s : resultList){
@@ -98,6 +99,7 @@
     }
 
     out.print(l);
+*/
 
 /*
     ArrayList<List> l = new ArrayList<List>();

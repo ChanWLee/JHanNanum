@@ -23,7 +23,43 @@
 %><%@page import="kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOSResult09.SimplePOSResult09"
 %><%@page import="kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOSResult22.SimplePOSResult22"
 %><%@page import="kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.NounExtractor.NounExtractor"
+%><%!
+
+/*
+// following method is invoked one time, when you web application starts (is deployed)
+@Override
+public void contextInitialized(ServletContextEvent servletContextEvent) {
+    super.contextInitialized(servletContextEvent);
+    final int numberOfThreads = 1;
+    final ExecutorService threadPool = Executors.newFixedThreadPool(numberOfThreads); // starts thread pool
+    final ServletContext servletContext = servletContextEvent.getServletContext();
+    servletContext.setAttribute("threadPoolAlias", threadPool);
+}
+
+// following method is invoked one time when your web application stops (is undeployed)
+public void contextDestroyed(ServletContextEvent servletContextEvent) {
+    // following code is just to free resources occupied by thread pool when web application is undeployed
+    final ExecutorService threadPool = (ExecutorService) servletContextEvent.getServletContext().getAttribute("threadPoolAlias");
+    threadPool.shutdown();
+    super.contextDestroyed(servletContextEvent);
+}
+*/
+
 %><%
+
+
+/*
+Callable<ResultOfMyTask> callable = new Callable<ResultOfMyTask>() {
+    public ResultOfMyTask call() {
+        // here goes your task code which is to be invoked by thread pool 
+    }
+};
+
+final ServletContext servletContext = application;
+final ExecutorsService threadPool = (ExecutorService) servletContext.getAttribute("threadPoolAlias");
+final Future<ResultOfMyTask> myTask = threadPool.submit(callable);;
+*/
+
 
   request.setCharacterEncoding("UTF-8");
 
